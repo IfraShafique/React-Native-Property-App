@@ -11,13 +11,15 @@ export default function SignUp() {
       <View className="flex-1 justify-center px-6 py-12">
         <Image
           source={require("../../assets/images/logo.png")}
-          className="w-40 h-24 mb-4"
+          className="w-40 h-24"
           resizeMode="contain"
         />
-        <Text className="text-2xl font-semibold text-gray-800 mb-2">
+        <Text className="text-3xl font-semibold text-gray-800 mb-2">
           Create Account
         </Text>
-        <Text className="text-gray-500 mb-8">Find your dream home today</Text>
+        <Text className="text-gray-500 text-lg mb-6">
+          Find your dream home today
+        </Text>
 
         <View className="flex-col gap-3 mb-4">
           <TextInput
