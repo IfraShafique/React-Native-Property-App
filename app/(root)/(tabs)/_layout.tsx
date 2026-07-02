@@ -3,27 +3,27 @@ import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
 export default function TabLayout() {
   return (
     <NativeTabs>
-
       <NativeTabs.Trigger name="index">
         <Label>Home</Label>
-        <Icon sf="house.fill"  drawable="home"/>
+        {/* Use standard Android drawables, or use src={require('./path/to/img.png')} */}
+        <Icon sf="house.fill" drawable="ic_menu_home" />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="search">
-        <Icon sf="magnifyingglass"  drawable="custom_android_drawable"/>
+        <Icon sf="magnifyingglass" drawable="ic_menu_search" />
         <Label>Search</Label>
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="saved">
-        <Icon sf="heart.fill"  drawable="custom_android_drawable"/>
+        {/* Make sure you map existing Android system icons, or local assets */}
+        <Icon sf="heart.fill" drawable="ic_menu_btn_add" />
         <Label>Saved</Label>
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="profile">
-        <Icon sf="person.fill"  drawable="custom_android_drawable"/>
+        <Icon sf="person.fill" drawable="ic_menu_my_calendar" />
         <Label>Profile</Label>
       </NativeTabs.Trigger>
-
     </NativeTabs>
   );
 }
