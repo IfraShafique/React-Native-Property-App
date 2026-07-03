@@ -1,5 +1,5 @@
 import { useAuth, useSignUp } from "@clerk/expo";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -20,7 +20,6 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
-  const router = useRouter();
 
   const isLoading = fetchStatus === "fetching";
 
@@ -48,10 +47,7 @@ export default function SignUp() {
     });
     if (signUp.status === "complete") {
       await signUp.finalize({
-        navigate: ({ decorateUrl }) => {
-          const url = decorateUrl("/");
-          router.replace(url as any);
-        },
+        navigate: () => {},
       });
     }
   };

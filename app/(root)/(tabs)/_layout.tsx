@@ -1,4 +1,5 @@
-import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { Icon, Label, NativeTabs, VectorIcon } from 'expo-router/unstable-native-tabs';
 
 export default function TabLayout() {
   return (
@@ -6,23 +7,30 @@ export default function TabLayout() {
       <NativeTabs.Trigger name="index">
         <Label>Home</Label>
         {/* Use standard Android drawables, or use src={require('./path/to/img.png')} */}
-        <Icon sf="house.fill" drawable="ic_menu_home" />
+        <Icon sf="house.fill"
+         androidSrc={<VectorIcon family={MaterialCommunityIcons} name="home" />} />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="search">
-        <Icon sf="magnifyingglass" drawable="ic_menu_search" />
+        <Icon sf="magnifyingglass"
+         androidSrc={<VectorIcon family={MaterialCommunityIcons} name="magnify" />} />
         <Label>Search</Label>
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="saved">
-        {/* Make sure you map existing Android system icons, or local assets */}
-        <Icon sf="heart.fill" drawable="ic_menu_btn_add" />
+        <Icon
+          sf="heart.fill"
+          androidSrc={<VectorIcon family={MaterialCommunityIcons} name="heart" />}
+        />
         <Label>Saved</Label>
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="profile">
-        <Icon sf="person.fill" drawable="ic_menu_my_calendar" />
-        <Label>Profile</Label>
+        <Icon
+          sf="person.fill"
+          androidSrc={<VectorIcon family={MaterialCommunityIcons} name="account" />}
+        />
+          <Label>Profile</Label>
       </NativeTabs.Trigger>
     </NativeTabs>
   );
