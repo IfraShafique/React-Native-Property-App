@@ -1,7 +1,9 @@
+import { useUserStore } from '@/store/useStore';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Icon, Label, NativeTabs, VectorIcon } from 'expo-router/unstable-native-tabs';
 
 export default function TabLayout() {
+  const isAdmin = useUserStore((state) => state.isAdmin);
   return (
     <NativeTabs>
       <NativeTabs.Trigger name="index">
@@ -16,6 +18,16 @@ export default function TabLayout() {
          androidSrc={<VectorIcon family={MaterialCommunityIcons} name="magnify" />} />
         <Label>Search</Label>
       </NativeTabs.Trigger>
+
+      {isAdmin && (
+        <NativeTabs.Trigger name="create">
+          <Icon
+            sf="plus.circle.fill"
+            androidSrc={<VectorIcon family={MaterialCommunityIcons} name="plus-circle" />}
+          />
+          <Label>Add Property</Label>
+        </NativeTabs.Trigger>
+      )}
 
       <NativeTabs.Trigger name="saved">
         <Icon
