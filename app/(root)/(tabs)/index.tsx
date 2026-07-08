@@ -39,9 +39,9 @@ export default function Home() {
         .eq("is_featured", false)
         .order("created_at", { ascending: false });
 
-      setFeatured(featuredData || []);
-      setRecommended(recommendedData || []);
-      setLoading(false);
+        setFeatured(featuredData || []);
+        setRecommended(recommendedData || []);
+        setLoading(false);
     } catch (error) {
       console.error("Error fetching properties:", error);
       setLoading(false);
