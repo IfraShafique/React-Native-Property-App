@@ -7,6 +7,7 @@ export interface Property {
     bedrooms: number;
     bathrooms: number;
     area_sqft: number;
+    address: string;
     city: string;
     latitude: number;
     longitude: number;
