@@ -1,0 +1,67 @@
+import { formatPrice } from "@/lib/utils";
+import { Property } from "@/types";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React from "react";
+import { View, Text, TouchableOpacity, Image } from "react-native";
+
+export default function PropertyCard({
+  property,
+  onUnsave,
+  showSave = false,
+}: {
+  property: Property;
+  onUnsave?: () => void;
+  showSave?: boolean;
+}) {
+  const router = useRouter();
+  const isSaved = true;
+  return (
+    <TouchableOpacity
+      className="flex-row rounded-2xl overflow-hidden mb-4 bg-white shadown-md shadow-black/80"
+      onPress={() => router.push(`/(root)/(tabs)/property/${property.id}`)}
+    >
+      <Image
+        source={{ uri: property.images[0] }}
+        className="w-28 h-28"
+        resizeMode="cover"
+      />
+
+      <View className="flex-1 p-3 justify-between ">
+    
+        <View className="flex-1">
+            <Text className="text-sm font-bold text-gray-800 mb-1" numberOfLines={1}>{property.title}</Text>
+            <View className="flex-row items-center gap-1">
+                <Ionicons name="location-outline" size={11} color="#6b7280" />
+                <Text className="text-xs text-gray-500" numberOfLines={1}>{property.address}, {property.city}</Text>
+            </View>
+        </View>
+
+        <View className="flex-row items-center justify-between">
+            <Text className="text-sm font-bold text-blue-600">{formatPrice(property.price)}</Text>
+            {property.is_sold && (
+                <View className="bg-red-50 px-2 py-0.5 rounded-full">
+                    <Text className="text-xs font-semibold text-red-500">Sold</Text>
+                </View>
+            )}
+
+            <View className="flex-row items-center gap-3">
+                <View className="flex-row items-center gap-1">
+                    <Ionicons name="bed-outline" size={11} color="#6b7280" />
+                    <Text className="text-xs text-gray-500">{property.bedrooms}</Text>
+                </View>
+                <View className="flex-row items-center gap-1">
+                    <Ionicons name="expand-outline" size={11} color="#6b7280" />
+                    <Text className="text-xs text-gray-500">{property.area_sqft} ft²</Text>
+                </View>
+
+            </View>
+        </View>
+      </View>
+
+      <TouchableOpacity className="w-10 items-center pt-3">
+        <Ionicons name={isSaved ? "heart" : "heart-outline"} size={18} color={isSaved ? "#ef4444" : "#9ca3af"} />
+      </TouchableOpacity>
+    </TouchableOpacity>
+  );
+}
