@@ -27,17 +27,23 @@ export default function Home() {
   const fetchProperties = async () => {
     try {
       setLoading(true);
-      const { data: featuredData } = await supabase
+      const { data: featuredData, error: featuredError } = await supabase
         .from("properties")
         .select("*")
         .eq("is_featured", true)
         .order("created_at", { ascending: false });
+      if (featuredError) {
+        console.error("Error fetching featured properties:", featuredError);
+      }
 
-      const { data: recommendedData } = await supabase
+      const { data: recommendedData, error: recommendedError } = await supabase
         .from("properties")
         .select("*")
         .eq("is_featured", false)
         .order("created_at", { ascending: false });
+      if (recommendedError) {
+        console.error("Error fetching recommended properties:", recommendedError);
+      }
 
         setFeatured(featuredData || []);
         setRecommended(recommendedData || []);
