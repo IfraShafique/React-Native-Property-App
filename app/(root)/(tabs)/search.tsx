@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import React, { act, useEffect, useState } from "react";
 import {
+    ActivityIndicator,
   FlatList,
   Text,
   TextInput,
@@ -224,7 +225,7 @@ export default function Search() {
         showsHorizontalScrollIndicator={false}
         ListHeaderComponent={
           <Text className="text-sm text-gray-400 mb-4">
-            {loading ? "Searching..." : `Found ${results.length} properties`}
+            {loading ? <ActivityIndicator size="small" color="#2563eb" className="items-center" /> : `Found ${results.length} properties`}
           </Text>
         }
         renderItem={({ item }) => <PropertyCard property={item} />}
@@ -234,8 +235,11 @@ export default function Search() {
               <Text className="text-gray-400 text-lg font-bold">
                 No Properties Found
               </Text>
+              <Text className="text-gray-400 text-sm">
+                Try different search terms or adjust your filters
+              </Text>
             </View>
-          ) : null
+          ) : <ActivityIndicator size="large" color="#2563eb" className=" py-20" />
         }
       />
 
