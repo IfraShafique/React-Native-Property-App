@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type PropertyType = "appartment" | "house" | "villa" | "studio" | null;
+export type PropertyType = "apartment" | "house" | "villa" | "studio" | null;
 
 interface FilterState {
   search: string;
@@ -11,9 +11,9 @@ interface FilterState {
 
   setSearch: (search: string) => void;
   setType: (type: PropertyType) => void;
-  setBedrooms: (bedrooms: number) => void;
-  setMinPrice: (minPrice: number) => void;
-  setMaxPrice: (maxPrice: number) => void;
+  setBedrooms: (bedrooms: number | null) => void;
+  setMinPrice: (minPrice: number | null) => void;
+  setMaxPrice: (maxPrice: number | null) => void;
   resetFilters: () => void;
 }
 
@@ -26,9 +26,9 @@ export const useFilterStore = create<FilterState>((set) => ({
 
   setSearch: (search: string) => set({ search }),
   setType: (type: PropertyType) => set({ type }),
-  setBedrooms: (bedrooms: number) => set({ bedrooms }),
-  setMinPrice: (minPrice: number) => set({ minPrice }),
-  setMaxPrice: (maxPrice: number) => set({ maxPrice }),
+  setBedrooms: (bedrooms: number | null) => set({ bedrooms }),
+  setMinPrice: (minPrice: number | null) => set({ minPrice }),
+  setMaxPrice: (maxPrice: number | null) => set({ maxPrice }),
   resetFilters: () =>
     set({
       search: "",
