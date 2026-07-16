@@ -1,6 +1,7 @@
 import { useSavedProperty } from "@/hooks/useSavedProperty";
 import { useSupabase } from "@/hooks/useSupabase";
 import { supabase } from "@/lib/supabase";
+import { formatPrice } from "@/lib/utils";
 import { useUserStore } from "@/store/useStore";
 import { Property } from "@/types";
 import { useAuth } from "@clerk/expo";
@@ -20,6 +21,7 @@ import {
   NativeScrollEvent,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import WebView from "react-native-webview";
 
 export default function PropertyDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -59,6 +61,12 @@ export default function PropertyDetails() {
     );
   }
 
+  const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${
+    property.longitude - 0.003
+  }%2C${property.latitude - 0.003}%2C${property.longitude + 0.003}%2C${
+    property.latitude + 0.003
+  }&layer=mapnik&marker=${property.latitude}%2C${property.longitude}`;
+
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const index = Math.round(e.nativeEvent.contentOffset.x / width);
     setActiveIndex(index);
@@ -93,6 +101,12 @@ export default function PropertyDetails() {
       },
     ]);
   };
+
+  const isLongDesc = (property.description?.length ?? 0) > 150;
+  const displayDesc =
+    expanded || !isLongDesc
+      ? property.description
+      : property.description.slice(0, 150) + "...";
 
   return (
     <View className="flex-1 bg-white">
@@ -162,9 +176,111 @@ export default function PropertyDetails() {
                 {property.type}
               </Text>
             </View>
+
+            {property.is_featured && (
+              <View className="bg-amber-50 px-3 py-1 rounded-full">
+                <Text className="text-amber-600 text-xs font-semibold capitalize">
+                  ⭐ Featured
+                </Text>
+              </View>
+            )}
+
+            {property.is_sold && (
+              <View className="bg-red-50 px-3 py-1 rounded-full">
+                <Text className="text-red-600 text-xs font-semibold capitalize">
+                  ✅ Sold
+                </Text>
+              </View>
+            )}
+          </View>
+
+          <Text className="text-2xl font-bold text-gray-900 mb-1">
+            {property.title}
+          </Text>
+          <Text className="text-blue-500 text-xl font-semibold mb-1">
+            {formatPrice(property.price)}
+          </Text>
+
+          <View className="flex-row justify-between bg-gray-50 rounded-2xl p-4 mb-2">
+            <SpaceItem
+              icon="bed-outline"
+              label="Beds"
+              value={`${property.bedrooms}`}
+            />
+            <SpaceItem
+              icon="water-outline"
+              label="Bathrooms"
+              value={`${property.bathrooms}`}
+            />
+            <SpaceItem
+              icon="expand-outline"
+              label="Area"
+              value={`${property.area_sqft} ft²`}
+            />
+            <SpaceItem icon="home-outline" label="Type" value={property.type} />
+          </View>
+
+          <View className="mb-4">
+            <Text className="text-gray-900 text-base font-semibold capitalize">
+              Description
+            </Text>
+            <Text className="text-gray-900 text-sm capitalize">
+              {displayDesc}
+            </Text>
+            {isLongDesc && (
+              <TouchableOpacity onPress={() => setExpanded(!expanded)}>
+                <Text className="text-blue-600 text-sm font-mediumm capitalize">
+                  {expanded ? "Show Less" : "Read More"}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          <View className="mb-4">
+            <Text className="text-gray-900 text-base font-semibold capitalize">
+              Location
+            </Text>
+
+            <View className="flex-row items-center gap-2">
+              <Ionicons name="location-outline" size={20} color="#6b7280" />
+              <Text className="text-gray-900 text-sm flex-1 capitalize">
+                {property.address}, {property.city}
+              </Text>
+            </View>
+
+            <TouchableOpacity activeOpacity={0.9}
+            className="rounded-2xl overflow-hidden mb-6"
+            style={{height: 200}}>
+              <WebView
+              source={{uri: mapUrl}}
+              style={{flex: 1}}
+              scrollEnabled={false}
+              pointerEvents="none"
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
+    </View>
+  );
+}
+
+function SpaceItem({
+  icon,
+  label,
+  value,
+}: {
+  icon: keyof typeof Ionicons.glyphMap;
+  label: string;
+  value: string;
+}) {
+  return (
+    <View className="items-center gap-1">
+      <Ionicons name={icon} size={20} color="#2563eb" />
+      <Text className="text-gray-900 text-sm font-semibold capitalize text-center">
+        {value}
+      </Text>
+      <Text className="text-gray-500 text-xs capitalize">{label}</Text>
     </View>
   );
 }
