@@ -61,16 +61,16 @@ export default function PropertyDetails() {
     );
   }
 
+  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const index = Math.round(e.nativeEvent.contentOffset.x / width);
+    setActiveIndex(index);
+  };
+
   const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${
     property.longitude - 0.003
   }%2C${property.latitude - 0.003}%2C${property.longitude + 0.003}%2C${
     property.latitude + 0.003
   }&layer=mapnik&marker=${property.latitude}%2C${property.longitude}`;
-
-  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const index = Math.round(e.nativeEvent.contentOffset.x / width);
-    setActiveIndex(index);
-  };
 
   const handleDelete = () => {
     Alert.alert("Delete Property", "Are you sure?", [
@@ -248,16 +248,60 @@ export default function PropertyDetails() {
               </Text>
             </View>
 
-            <TouchableOpacity activeOpacity={0.9}
-            className="rounded-2xl overflow-hidden mb-6"
-            style={{height: 200}}>
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={() =>
+                router.push({
+                  pathname: "/(root)/property/map",
+                  params: {
+                    latitude: property.latitude,
+                    longitude: property.longitude,
+                    title: property.title,
+                    address: `${property.address}, ${property.city}`,
+                  },
+                })
+              }
+              className="rounded-2xl overflow-hidden mb-6"
+              style={{ height: 200 }}
+            >
               <WebView
-              source={{uri: mapUrl}}
-              style={{flex: 1}}
-              scrollEnabled={false}
-              pointerEvents="none"
+                source={{ uri: mapUrl }}
+                style={{ flex: 1 }}
+                scrollEnabled={false}
+                pointerEvents="none"
               />
+
+              <View className="absolute bottom-3 right-3 px-3 py-1 bg-white/90 rounded-full flex-row items-center gap-1">
+                <Ionicons name="expand-outline" size={12} color="#374151" />
+                <Text className="text-gray-600 text-xs font-medium">
+                  Tap to expand
+                </Text>
+              </View>
             </TouchableOpacity>
+
+            <TouchableOpacity className="bg-green-600 px-4 py-2 rounded-xl flex-row items-center justify-center gap-2">
+              <Ionicons name="logo-whatsapp" size={20} color="white" />
+              <Text className="text-white text-base font-bold">
+                Contact Agent
+              </Text>
+            </TouchableOpacity>
+
+            {isAdmin && (
+              <View className="flex-row gap-3 mt-2">
+                {!property.is_sold && (
+                  <TouchableOpacity className="flex-1 flex-row items-center justify-center gap-2 bg-amber-50 py-2 rounded-xl border border-amber-200">
+                    <Ionicons
+                      name="checkmark-circle-outline"
+                      size={18}
+                      color="#d97706"
+                    />
+                    <Text className="text-amber-600 font-semibold">
+                      Mark as Sold
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
           </View>
         </View>
       </ScrollView>
