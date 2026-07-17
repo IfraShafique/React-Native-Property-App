@@ -10,7 +10,7 @@ export default function FeaturedCard({ property }: { property: Property }) {
   return (
     <TouchableOpacity
       className="w-72 mr-2 rounded-3xl overflow-hidden bg-white shadow-md shadow-black/80"
-      onPress={() => router.push(`/(root)/(tabs)/property/${property.id}`)}
+      onPress={() => router.push(`/(root)/property/${property.id}`)}
     >
       <Image
         source={property.images[0] ? { uri: property.images[0] } : require("@/assets/images/logo.png")}
